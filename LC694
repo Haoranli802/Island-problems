@@ -1,0 +1,38 @@
+class Solution {
+    public int numDistinctIslands(int[][] grid) {
+        int res = 0;
+        Set<String> set = new HashSet<>();
+        for(int i = 0; i < grid.length; i++){
+            for(int j = 0; j < grid[0].length; j++){
+                if(grid[i][j] == 1){
+                    StringBuilder sb = new StringBuilder();
+                    dfs(grid, i, j, sb, 9);
+                    set.add(sb.toString());
+                }
+            }
+        }
+        return set.size();
+    }
+    private void dfs(int[][] grid, int i, int j, StringBuilder sb, int dir) {
+        //int m = grid.length, n = grid[0].length;
+        if (!inArea(grid, i, j)
+            || grid[i][j] == 0) {
+            return;
+        }
+        // 前序遍历位置：进入 (i, j)
+        grid[i][j] = 0;
+        sb.append(dir).append(',');
+        
+        dfs(grid, i - 1, j, sb, 1); // 上
+        dfs(grid, i + 1, j, sb, 2); // 下
+        dfs(grid, i, j - 1, sb, 3); // 左
+        dfs(grid, i, j + 1, sb, 4); // 右
+        
+        // 后序遍历位置：离开 (i, j)
+        sb.append(-dir).append(',');
+    }
+    private boolean inArea(int[][] grid, int r, int c){
+        return r >= 0 && r < grid.length && c >= 0 && c < grid[0].length;
+    }
+}
+//O（MN）， O（MN）
